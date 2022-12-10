@@ -11,8 +11,6 @@ const package = require('./package.json');
 
 const distUserScript = package.name + '.user.js';
 const url = package.repository.url.replace('git+', '').replace('.git', '');
-const updateUrl = package.repository.url.replace('git+', '').replace('.git', '') + '/raw/master/dist/' + distUserScript;
-const downloadUrl = updateUrl;
 
 const HEADER = `// ==UserScript==
 // @name         ${package.name}
@@ -23,8 +21,6 @@ const HEADER = `// ==UserScript==
 // @author       ${package.author}
 // @match        http*://example.com/
 // @grant        none
-// @updateURL    ${updateUrl}
-// @downloadURL  ${downloadUrl}
 // ==/UserScript==
 
 `;
