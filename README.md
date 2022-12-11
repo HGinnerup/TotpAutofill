@@ -1,72 +1,22 @@
-# 🐵 Greasemonkey Webpack + TypeScript boilerplate
+# Auto-generate TOTP tokens
+Can automatically generate and fill out login-fields for TOTP (authenticator app) tokens.
 
-Create your Greasemonkey userscripts with the comfort of Webpack and TypeScript.
+## Warning
+Use at own risk. It **significantly reduces the security** of 2FA by effectively reducing it to 1-factor.
 
-## 📑 What's the purpose of this boilerplate?
+## Requirements
+**For use**: Extension Greasemonkey for Chrome or Tampermonkey for Firefox
 
-This will help you generate a userscript file while being able to write everything in TypeSript. You can also inject SCSS files and HTML. This uses no fancy frameworks or libs to avoid interfering with your destination website but of course, you're free to do whatever you like. I believe that Webpack will bundle your libs in a way that they will not interfere with the destination page.
-
-## 🍴 How to use this boilerplate ?
-
-Simple, just click the "Use this template" button or better, [click here](https://github.com/tarkant/greasemonkey-webpack-typescript-boilerplate/generate) and create your repo.
-
-Next, run the good old :
-```bash
-npm install
-```
-
-Finally and very importantly, go to the file `post-build.js` and replace the @match pattern with your destination website :
-
-```js
-// @match        http://example.com/
-```
-
-**Note:** You can still install the current boilerplate userscript [by clicking here](https://github.com/tarkant/greasemonkey-webpack-typescript-boilerplate/raw/master/dist/greasemonkey-webpack-typescript-boilerplate.user.js) then headint to [http://example.com/](http://example.com/), you'll see a div with injected html and CSS 😊 .
-
-## ⚙ How does the post-build.js work?
-
-This script file will be ran by NodeJS to prepend the header needed for Greasemonkey to detect that it is a userscript. I tried to make it as automatic as possible so it will read the package.json information and add them to the userscript.
-
-Mainly the script will take these information from the package.json :
-- name
-- version
-- description
-- license
-- author
-
-**Important note:** To gather the Github repo url, the script replaces some strings in this funky line of code :
-```js
-const url = package.repository.url.replace('git+', '').replace('.git', '');
-```
-If by some change something goes wrong, you know where to look.
-
-**Important note 2:** The script also adds the update and download url by taking the precedent url and adding some static text using this funky line :
-```js
-const updateUrl = package.repository.url.replace('git+', '').replace('.git', '') + '/raw/master/dist/' + distUserScript;
-```
-Again, if you don't understand why something is going wrong, this might be the culprit.
-
-## ⚒ How to build my userscript ?
-
-To build your userscript just run :
-
-```bash
-npm run build
-```
-
-This will the userscript in the `dist` folder that you can install on Greasemonkey or Tampermonkey.
+**For setting up**: Nodejs
 
 
-## 🆘 Issues and contributions
-
-If you have an issue with the boilerplate or want to contribute, please let me know I'll be happy to interact with you.
-
-Happy hacking!
-
-## ⏲ Changelog
-
-- v1.0.4: Improve HTML importing
-- v1.0.3: Fix example.com `@match` pattern
-- v1.0.2: Bump packages version
-- v1.0.1: Minor fixes & made userscript work for example.com
-- v1.0.0: Base boilerplate
+## How to setup
+1. Pull project
+2. Go to service you want to add this to, add new authenticator. When it gives you the step to scan a QR-code, say you cannot scan it. You should then get a *secret* a roughly 16 character random string.
+3. Copy the *secret*.
+4. In the code, go to ./src/totp-config.js, insert the secret instead of `ENTER TOTP SECRET HERE`.
+5. In command line, run: `npm install`, then `npm run build`
+6. Go to ./dist/totp-autofill.user.js
+7. If the authenticator setup asks for a token to verify, paste the contents of `./dist/totp-autofill.user.js` into a javascript console to get a token.
+8. On the login page you want this to work for, add a new grease- or tampermonkey userscript, insert contents of `./dist/totp-autofill.user.js`.
+9. In the top of the script in Grease- or Tampermonkey, replace `// @match        http*://example.com/` with `// @match        [whatever url you're currently on]`
