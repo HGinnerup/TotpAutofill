@@ -7,7 +7,7 @@ const secret = totpConf.secret;
 const token = totp(secret);
 
 
-console.log(secret + ":" + token); // prints a 6-digit time-based token based on provided key and current time
+console.log("TOTP:" + token); // prints a 6-digit time-based token based on provided key and current time
 
 
 const autofillInterval = setInterval(() =>{
