@@ -1,11 +1,13 @@
 const totp = require("totp-generator");
 const totpConf = require("./totp-config");
 
+const secret = totpConf.secret;
+
 // Keys provided must be base32 strings, ie. only containing characters matching (A-Z, 2-7, =).
-const token = totp(totpConf.secret);
+const token = totp(secret);
 
 
-console.log(token); // prints a 6-digit time-based token based on provided key and current time
+console.log(secret + ":" + token); // prints a 6-digit time-based token based on provided key and current time
 
 
 const autofillInterval = setInterval(() =>{
@@ -13,7 +15,7 @@ const autofillInterval = setInterval(() =>{
     if(totpInputField == null)
         return;
 
-        totpInputField.value = totp(totpConf.secret);
+        totpInputField.value = totp(secret);
     
     clearInterval(autofillInterval);
 }, 500);
